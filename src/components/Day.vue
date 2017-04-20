@@ -3,7 +3,7 @@
     <div class="row" v-for="day in sortedDatesArr">
       <div class="col s12">
         <h4 class="center">{{ day.slice(0, 10) }}</h4>
-        <table>
+        <table class="bordered">
           <thead>
             <tr>
               <th v-for="heading in tableHeadings[day]">{{ heading }}</th>
@@ -32,13 +32,14 @@ export default {
     return {
       orderedByDay: { },
       sortedDatesArr: [],
-      tableHeadings: [ ]
+      tableHeadings: { }
     }
   },
   methods: {
 
   },
   mounted: function () {
+
     for (let i = 0; i < this.rows.length; i++) {
       if (!this.orderedByDay[this.rows[i][0].format()]) {
         this.orderedByDay[this.rows[i][0].format()] = [this.rows[i]]
@@ -47,13 +48,15 @@ export default {
         this.orderedByDay[this.rows[i][0].format()].push(this.rows[i])
       }
     }
+
     this.sortedDatesArr.reverse()
     let tempOrderedByDay = this.orderedByDay
+
     for (let key in tempOrderedByDay) {
-      let largestArr = 0
-      let indexOfLargest
-      let arrOfHeadings = []
-      let goodIndexs = []
+      let arrOfHeadings = [ ];
+      let largestArr = 0;
+      let indexOfLargest;
+      let goodIndexs = [];
 
       for (let i = 0; i < tempOrderedByDay[key].length; i++) {
         if (tempOrderedByDay[key][i].length > largestArr) {
@@ -65,13 +68,14 @@ export default {
 
       for (let i = 0; i < tempOrderedByDay[key][indexOfLargest].length; i++) {
         if (tempOrderedByDay[key][indexOfLargest][i]) {
+          console.log('this');
           arrOfHeadings.push(this.tableCols[i])
           goodIndexs.push(i)
         }
       }
+      console.log(arrOfHeadings);
 
       for (let i = 0; i < tempOrderedByDay[key].length; i++) {
-        // tempOrderedByDay[key][i] = tempOrderedByDay[key][i].filter(Boolean)
         for (let j = 0; j < largestArr; j++) {
 
           tempOrderedByDay[key][j].forEach((el, index) => {
@@ -82,13 +86,17 @@ export default {
 
           })
 
+          for (var i = 0; i < temp.orderedByDay[key][j].length; i++) {
+            temp.orderedByDay[key][j]
+          }
+
         }
         tempOrderedByDay[key][i] = tempOrderedByDay[key][i].filter(Boolean)
       }
 
+      this.tableHeadings[key] = arrOfHeadings
     }
     this.orderedByDay = tempOrderedByDay;
-    this.tableHeadings.push(arrOfHeadings);
 
 
   },
