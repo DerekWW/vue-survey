@@ -8,7 +8,8 @@ import router from './router'
 
 Vue.use(MuseUI)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
+Vue.config.debug = true
 
 /* eslint-disable no-new */
 new Vue({
