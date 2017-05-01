@@ -1,30 +1,27 @@
 <template lang="html">
   <div class="container">
-    here
-    <!-- <div class="row" v-for="day in sortedDatesArr">
+    <div class="row" v-for="day in orderedByDay">
       <div class="col s12">
-        <h4 class="center">{{ day.slice(0, 10) }}</h4>
-        <table class="bordered">
+        <h4 class="center">{{ day.date.format().slice(0, 10) }}</h4>
+        <table class="striped bordered">
           <thead>
             <tr>
-              <th v-for="heading in tableHeadings[day]">{{ heading }}</th>
-
+              <th v-for=" heading in day.headings">{{ heading }}</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="row of orderedByDay[day]">
+            <tr v-for="row in day.students">
               <td v-for="item of row">{{ item }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-// import _ from 'lodash'
 /*eslint-disable*/
 
 export default {
@@ -33,7 +30,8 @@ export default {
     return {
       orderedByDay: [ ],
       dateObjArr: [ ],
-      tableHeadings: { }
+      tableHeadings: { },
+      myRows: ''
     }
   },
   methods: {
@@ -41,11 +39,10 @@ export default {
       this.orderedByDay.push(obj)
     }
   },
-  created: function () {
+  mounted: function () {
+    this.myRows = _.cloneDeep(this.rows);
 
-    let tempRows = this.rows;
-
-    tempRows.forEach((row) => {
+    this.myRows.forEach((row) => {
       let newDayObj;
 
       let hasDateArr = this.orderedByDay.filter(function(dayObj) {
@@ -64,7 +61,7 @@ export default {
 
     this.orderedByDay.forEach((day) => {
       day.students = [];
-      this.rows.forEach(function(row) {
+      this.myRows.forEach(function(row) {
         if (day.date.isSame(row[0], 'day')) {
           day.students.push(row)
         }
@@ -78,9 +75,11 @@ export default {
       let longestStudent = -1;
 
       day.students.forEach((student, index) => {
-        if (student.length > longestStudent) {
+        if (student.length >= longestStudent) {
           longestStudent = index;
+          console.log(longestStudent);
         }
+
       })
 
       day.students[longestStudent].forEach((rowEntry, index) => {
@@ -91,22 +90,21 @@ export default {
       })
 
       day.students.forEach((student) => {
+
         headingIndexs.forEach((index) => {
           if (!student[index]) {
             student[index] = 'N/A'
           }
         })
+
+        _.remove(student, (el) => {
+          return !el
+        })
+
       })
-
-
-
-
-
     })
 
-
-
-
+    this.orderedByDay.reverse()
   },
   props: ['rows', 'tableCols']
 }
