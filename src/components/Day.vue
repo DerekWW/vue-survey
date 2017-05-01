@@ -31,8 +31,8 @@ export default {
   name: 'Day',
   data: function () {
     return {
-      orderedByDay: [],
-      dateObjArr: [],
+      orderedByDay: [ ],
+      dateObjArr: [ ],
       tableHeadings: { }
     }
   },
@@ -45,20 +45,60 @@ export default {
 
     let tempRows = this.rows;
 
-    tempRows.forEach(function(row) {
+    tempRows.forEach((row) => {
       let newDayObj;
 
       let hasDateArr = this.orderedByDay.filter(function(dayObj) {
-        return dayObj.date
+        return dayObj.date.isSame(row[0], 'day')
       })
 
-      if (!hasDatArr.length) {
+      if (!hasDateArr.length) {
         newDayObj = {
           date: row[0]
         }
 
         this.pushObj(newDayObj)
       }
+
+    })
+
+    this.orderedByDay.forEach((day) => {
+      day.students = [];
+      this.rows.forEach(function(row) {
+        if (day.date.isSame(row[0], 'day')) {
+          day.students.push(row)
+        }
+      })
+
+    })
+
+    this.orderedByDay.forEach((day) => {
+      day.headings = [];
+      let headingIndexs = [];
+      let longestStudent = -1;
+
+      day.students.forEach((student, index) => {
+        if (student.length > longestStudent) {
+          longestStudent = index;
+        }
+      })
+
+      day.students[longestStudent].forEach((rowEntry, index) => {
+        if (rowEntry !== '') {
+          day.headings.push(this.tableCols[index])
+          headingIndexs.push(index)
+        }
+      })
+
+      day.students.forEach((student) => {
+        headingIndexs.forEach((index) => {
+          if (!student[index]) {
+            student[index] = 'N/A'
+          }
+        })
+      })
+
+
 
 
 
