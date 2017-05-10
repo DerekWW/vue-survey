@@ -1,18 +1,17 @@
 <template lang="html">
   <div class="container">
-    <div class="row" v-for="day in sortedDatesArr">
+    <div class="row" v-for="day in orderedByDay">
       <div class="col s12">
-        <h4 class="center">{{ day.slice(0, 10) }}</h4>
-        <table class="bordered">
+        <h4 class="center">{{ day.date.format().slice(0, 10) }}</h4>
+        <table class="striped bordered">
           <thead>
             <tr>
-              <th v-for="heading in tableHeadings[day]">{{ heading }}</th>
-
+              <th v-for=" heading in day.headings">{{ heading }}</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="row of orderedByDay[day]">
+            <tr v-for="row in day.students">
               <td v-for="item of row">{{ item }}</td>
             </tr>
           </tbody>
@@ -23,82 +22,89 @@
 </template>
 
 <script>
-// import _ from 'lodash'
 /*eslint-disable*/
 
 export default {
   name: 'Day',
   data: function () {
     return {
-      orderedByDay: { },
-      sortedDatesArr: [],
-      tableHeadings: { }
+      orderedByDay: [ ],
+      dateObjArr: [ ],
+      tableHeadings: { },
+      myRows: ''
     }
   },
   methods: {
-
+    pushObj: function(obj){
+      this.orderedByDay.push(obj)
+    }
   },
   mounted: function () {
+    this.myRows = _.cloneDeep(this.rows);
 
-    for (let i = 0; i < this.rows.length; i++) {
-      if (!this.orderedByDay[this.rows[i][0].format()]) {
-        this.orderedByDay[this.rows[i][0].format()] = [this.rows[i]]
-        this.sortedDatesArr.push(this.rows[i][0].format())
-      } else {
-        this.orderedByDay[this.rows[i][0].format()].push(this.rows[i])
-      }
-    }
+    this.myRows.forEach((row) => {
+      let newDayObj;
 
-    this.sortedDatesArr.reverse()
-    let tempOrderedByDay = this.orderedByDay
+      let hasDateArr = this.orderedByDay.filter(function(dayObj) {
+        return dayObj.date.isSame(row[0], 'day')
+      })
 
-    for (let key in tempOrderedByDay) {
-      let arrOfHeadings = [ ];
-      let largestArr = 0;
-      let indexOfLargest;
-      let goodIndexs = [];
-
-      for (let i = 0; i < tempOrderedByDay[key].length; i++) {
-        if (tempOrderedByDay[key][i].length > largestArr) {
-          indexOfLargest = i
-          largestArr = tempOrderedByDay[key][i].length
+      if (!hasDateArr.length) {
+        newDayObj = {
+          date: row[0]
         }
 
+        this.pushObj(newDayObj)
       }
 
-      for (let i = 0; i < tempOrderedByDay[key][indexOfLargest].length; i++) {
-        if (tempOrderedByDay[key][indexOfLargest][i]) {
-          console.log('this');
-          arrOfHeadings.push(this.tableCols[i])
-          goodIndexs.push(i)
+    })
+
+    this.orderedByDay.forEach((day) => {
+      day.students = [];
+      this.myRows.forEach(function(row) {
+        if (day.date.isSame(row[0], 'day')) {
+          day.students.push(row)
         }
-      }
-      console.log(arrOfHeadings);
+      })
 
-      for (let i = 0; i < tempOrderedByDay[key].length; i++) {
-        for (let j = 0; j < largestArr; j++) {
+    })
 
-          tempOrderedByDay[key][j].forEach((el, index) => {
-            if (el === '' && goodIndexs.indexOf(index) !== -1) {
-              console.log(tempOrderedByDay[key][j][index]);
-              tempOrderedByDay[key][j][index] = 'N/A'
-            }
+    this.orderedByDay.forEach((day) => {
+      day.headings = [];
+      let headingIndexs = [];
+      let longestStudent = -1;
 
-          })
+      day.students.forEach((student, index) => {
+        if (student.length >= longestStudent) {
+          longestStudent = index;
+          console.log(longestStudent);
+        }
 
-          for (var i = 0; i < temp.orderedByDay[key][j].length; i++) {
-            temp.orderedByDay[key][j]
+      })
+
+      day.students[longestStudent].forEach((rowEntry, index) => {
+        if (rowEntry !== '') {
+          day.headings.push(this.tableCols[index])
+          headingIndexs.push(index)
+        }
+      })
+
+      day.students.forEach((student) => {
+
+        headingIndexs.forEach((index) => {
+          if (!student[index]) {
+            student[index] = 'N/A'
           }
+        })
 
-        }
-        tempOrderedByDay[key][i] = tempOrderedByDay[key][i].filter(Boolean)
-      }
+        _.remove(student, (el) => {
+          return !el
+        })
 
-      this.tableHeadings[key] = arrOfHeadings
-    }
-    this.orderedByDay = tempOrderedByDay;
+      })
+    })
 
-
+    this.orderedByDay.reverse()
   },
   props: ['rows', 'tableCols']
 }

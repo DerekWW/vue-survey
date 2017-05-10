@@ -53,6 +53,7 @@ export default {
 
     onLoad: function(data, error) {
       if (data) {
+        console.log(data);
         this.tableCols = data.data.shift()
 
         let formatedData = data.data.forEach((rowArr) => {
