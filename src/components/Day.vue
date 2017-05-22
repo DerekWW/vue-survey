@@ -24,6 +24,8 @@
 <script>
 /*eslint-disable*/
 
+import _ from 'lodash';
+
 export default {
   name: 'Day',
   data: function () {
@@ -41,7 +43,9 @@ export default {
   },
   mounted: function () {
     this.myRows = _.cloneDeep(this.rows);
+    // console.log(this.myRows);
 
+    // go through each row and make a array of objects, each object a new date
     this.myRows.forEach((row) => {
       let newDayObj;
 
@@ -54,11 +58,14 @@ export default {
           date: row[0]
         }
 
-        this.pushObj(newDayObj)
+        this.orderedByDay.push(newDayObj)
       }
 
     })
 
+    // console.log(this.orderedByDay);
+
+    // for each day object, loop through rows and push them into a students array on that object
     this.orderedByDay.forEach((day) => {
       day.students = [];
       this.myRows.forEach(function(row) {
@@ -69,24 +76,28 @@ export default {
 
     })
 
+
     this.orderedByDay.forEach((day) => {
       day.headings = [];
       let headingIndexs = [];
-      let longestStudent = -1;
+      let longestStudent = 0;
 
+      //find longest index for a given day, since longest index will have the most questions answered
       day.students.forEach((student, index) => {
         if (student.length >= longestStudent) {
           longestStudent = index;
-          console.log(longestStudent);
         }
 
       })
 
-      day.students[longestStudent].forEach((rowEntry, index) => {
-        if (rowEntry !== '') {
-          day.headings.push(this.tableCols[index])
-          headingIndexs.push(index)
-        }
+
+      day.students.forEach((student) => {
+        student.forEach((answer, index) => {
+          if (answer !== '' && day.headings.indexOf(this.tableCols[index]) === -1) {
+            day.headings.push(this.tableCols[index])
+            headingIndexs.push(index)
+          }
+        })
       })
 
       day.students.forEach((student) => {
