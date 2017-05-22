@@ -35,12 +35,18 @@ export default {
       tableCols: [],
     }
   },
-  mounted: function() {
+
+  beforeMount: function() {
     window.gapi.load('client', () => {
       checkAuth(true, this.handleAuth);
     });
   },
+
+
   methods: {
+    organizeData: function() {
+
+    },
 
     handleAuth: function(authResult) {
       if (authResult && !authResult.error) {
@@ -53,7 +59,6 @@ export default {
 
     onLoad: function(data, error) {
       if (data) {
-        console.log(data);
         this.tableCols = data.data.shift()
 
         let formatedData = data.data.forEach((rowArr) => {
@@ -61,6 +66,7 @@ export default {
         })
 
         this.rows = data.data ;
+        this.organizeData()
       } else {
         this.error = error;
       }
