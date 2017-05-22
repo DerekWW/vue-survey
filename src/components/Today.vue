@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container">
-    <div class="row" v-for="day in orderedByDay">
+    <div class="row" v-for="day in today">
       <div class="col s12">
         <h4 class="center">{{ day.date.format().slice(0, 10) }}</h4>
         <table class="striped bordered">
@@ -22,24 +22,20 @@
 </template>
 
 <script>
+
 /*eslint-disable*/
-
-import _ from 'lodash';
-
 export default {
-  name: 'Day',
-  data: function () {
+  name: 'Today',
+  data: function(){
     return {
-
+      today: [this.orderedByDay[0]]
     }
   },
-  methods: {
-    pushObj: function(obj){
-      this.orderedByDay.push(obj)
-    }
-  },
-  mounted: function () {
 
+  created: function() {
+    $(document).ready(function() {
+      $('select').material_select()
+    });
   },
   props: ['rows', 'tableCols', 'orderedByDay']
 }

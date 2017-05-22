@@ -6,14 +6,14 @@
   <div class="col s4">
     <div class="row">
       <div class="col s12">
-        <router-link to="/filter-question" class="waves-effect waves-light btn-large">By Question</router-link>
+        <router-link to="/today" class="waves-effect waves-light btn-large">Today Only</router-link>
       </div>
     </div>
   </div>
   <div class="col s4">
     <div class="row">
       <div class="col s12">
-        <router-link to="/by-day" class="waves-effect waves-light btn-large">By Day</router-link>
+        <router-link to="/by-day" class="waves-effect waves-light btn-large">All Days</router-link>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
 
       </div>
     </div>
-  </div> 
+  </div>
 </div>
 </template>
 
@@ -35,9 +35,10 @@ export default {
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
+      today: [this.orderedByDay[0]]
     };
   },
-  props: ['rows', 'tableCols'],
+  props: ['orderedByDay'],
 };
 </script>
 

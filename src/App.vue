@@ -7,7 +7,7 @@
       <button v-on:click="authenticate" className="btn">Connect with Google</button>
     </div>
   </div>
-  <router-view v-else :rows="rows" :tableCols="tableCols"></router-view>
+  <router-view v-else :rows="rows" :orderedByDay="orderedByDay" :tableCols="tableCols"></router-view>
   <foot></foot>
 </div>
 </template>
@@ -33,6 +33,12 @@ export default {
       rows: [],
       students: { },
       tableCols: [],
+
+      orderedByDay: [ ],
+      dateObjArr: [ ],
+      tableHeadings: { },
+      myRows: '',
+
     }
   },
 
@@ -45,12 +51,84 @@ export default {
 
   methods: {
     organizeData: function() {
+      this.myRows = _.cloneDeep(this.rows);
+      // console.log(this.myRows);
 
+      // go through each row and make a array of objects, each object a new date
+      this.myRows.forEach((row) => {
+        let newDayObj;
+
+        let hasDateArr = this.orderedByDay.filter(function(dayObj) {
+          return dayObj.date.isSame(row[0], 'day')
+        })
+
+        if (!hasDateArr.length) {
+          newDayObj = {
+            date: row[0]
+          }
+
+          this.orderedByDay.push(newDayObj)
+        }
+
+      })
+
+      // console.log(this.orderedByDay);
+
+      // for each day object, loop through rows and push them into a students array on that object
+      this.orderedByDay.forEach((day) => {
+        day.students = [];
+        this.myRows.forEach(function(row) {
+          if (day.date.isSame(row[0], 'day')) {
+            day.students.push(row)
+          }
+        })
+
+      })
+
+
+      this.orderedByDay.forEach((day) => {
+        day.headings = [];
+        let headingIndexs = [];
+        let longestStudent = 0;
+
+        //find longest index for a given day, since longest index will have the most questions answered
+        day.students.forEach((student, index) => {
+          if (student.length >= longestStudent) {
+            longestStudent = index;
+          }
+
+        })
+
+
+        day.students.forEach((student) => {
+          student.forEach((answer, index) => {
+            if (answer !== '' && day.headings.indexOf(this.tableCols[index]) === -1) {
+              day.headings.push(this.tableCols[index])
+              headingIndexs.push(index)
+            }
+          })
+        })
+
+        day.students.forEach((student) => {
+
+          headingIndexs.forEach((index) => {
+            if (!student[index]) {
+              student[index] = 'N/A'
+            }
+          })
+
+          _.remove(student, (el) => {
+            return !el
+          })
+
+        })
+      })
+
+      this.orderedByDay.reverse()
     },
 
     handleAuth: function(authResult) {
       if (authResult && !authResult.error) {
-        this.authenticated = true
         load(this.onLoad)
       } else {
           this.authenticated = false
@@ -67,6 +145,7 @@ export default {
 
         this.rows = data.data ;
         this.organizeData()
+        this.authenticated = true;
       } else {
         this.error = error;
       }
