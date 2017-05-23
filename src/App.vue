@@ -52,7 +52,6 @@ export default {
   methods: {
     organizeData: function() {
       this.myRows = _.cloneDeep(this.rows);
-      // console.log(this.myRows);
 
       // go through each row and make a array of objects, each object a new date
       this.myRows.forEach((row) => {
@@ -72,8 +71,6 @@ export default {
 
       })
 
-      // console.log(this.orderedByDay);
-
       // for each day object, loop through rows and push them into a students array on that object
       this.orderedByDay.forEach((day) => {
         day.students = [];
@@ -82,31 +79,66 @@ export default {
             day.students.push(row)
           }
         })
-
       })
-
 
       this.orderedByDay.forEach((day) => {
         day.headings = [];
         let headingIndexs = [];
-        let longestStudent = 0;
-
-        //find longest index for a given day, since longest index will have the most questions answered
-        day.students.forEach((student, index) => {
-          if (student.length >= longestStudent) {
-            longestStudent = index;
-          }
-
-        })
-
+        day.chartData = {
+          labels: ['Great!', 'Good', 'Meh', 'Terrible'],
+          datasets: [
+            {
+              label: 'Class Emotions',
+              backgroundColor: [
+                'rgba(24,255,0, 0.2)',
+                'rgba(66, 232, 244, 0.2)',
+                'rgba(241, 247, 66, 0.2)',
+                'rgba(247, 72, 65, 0.2)'
+              ],
+              data: [0,0,0,0]
+            }
+          ]
+        };
 
         day.students.forEach((student) => {
           student.forEach((answer, index) => {
-            if (answer !== '' && day.headings.indexOf(this.tableCols[index]) === -1) {
-              day.headings.push(this.tableCols[index])
+
+            if (answer != '' && headingIndexs.indexOf(index) === -1) {
               headingIndexs.push(index)
+              console.log(index);
             }
+
+            if (index === 2) {
+              switch(answer) {
+                case 'Great!':
+                  day.chartData.datasets[0].data[0] += 1;
+                  break;
+                case 'Good':
+                  day.chartData.datasets[0].data[1] += 1;
+                  break;
+                case 'Meh':
+                  day.chartData.datasets[0].data[2] += 1;
+                  break;
+                case 'Terrible':
+                  day.chartData.datasets[0].data[3] += 1;
+                  break;
+              }
+            }
+
+            // if (answer !== '' && day.headings.indexOf(this.tableCols[index]) === -1) {
+            //   day.headings.push(this.tableCols[index])
+            //   headingIndexs.push(index)
+            // }
           })
+
+          headingIndexs.sort((a,b) => {
+            return a - b
+          })
+
+        })
+
+        headingIndexs.forEach((el) => {
+          day.headings.push(this.tableCols[el])
         })
 
         day.students.forEach((student) => {

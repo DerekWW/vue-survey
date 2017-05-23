@@ -2,7 +2,11 @@
   <div class="container">
     <div class="row" v-for="day in orderedByDay">
       <div class="col s12">
-        <h4 class="center">{{ day.date.format().slice(0, 10) }}</h4>
+        <h4 class="center">{{ day.date.format('dddd, MMMM Do YYYY') }}</h4>
+        <pie-chart class="col s4 offset-s4"
+         :data="day.chartData"
+         :options="{responsive: true, maintainAspectRatio: true}"
+         ></pie-chart>
         <table class="striped bordered">
           <thead>
             <tr>
@@ -25,23 +29,25 @@
 /*eslint-disable*/
 
 import _ from 'lodash';
+import PieChart from '../charts.js'
 
 export default {
   name: 'Day',
+  components: {
+    PieChart
+  },
   data: function () {
     return {
 
     }
   },
   methods: {
-    pushObj: function(obj){
-      this.orderedByDay.push(obj)
-    }
+
   },
   mounted: function () {
 
   },
-  props: ['rows', 'tableCols', 'orderedByDay']
+  props: ['rows', 'tableCols', 'orderedByDay'],
 }
 </script>
 
