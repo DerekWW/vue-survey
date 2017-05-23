@@ -7,6 +7,12 @@
          :data="day.chartData"
          :options="{responsive: true, maintainAspectRatio: true}"
          ></pie-chart>
+         <div class="col s4">
+           <ul>
+             <li>Submitted: {{ day.totalSubmitted }}</li>
+             <li>Missing: {{ 19 - day.totalSubmitted }}</li>
+           </ul>
+         </div>
         <table class="striped bordered">
           <thead>
             <tr>

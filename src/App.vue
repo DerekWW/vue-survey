@@ -82,8 +82,16 @@ export default {
       })
 
       this.orderedByDay.forEach((day) => {
-        day.headings = [];
         let headingIndexs = [];
+
+        day.headings = [];
+        day.totalSubmitted = 0;
+        day.emotions = {
+          great: [],
+          good: [],
+          meh: [],
+          terrible: []
+        }
         day.chartData = {
           labels: ['Great!', 'Good', 'Meh', 'Terrible'],
           datasets: [
@@ -101,34 +109,33 @@ export default {
         };
 
         day.students.forEach((student) => {
+          day.totalSubmitted += 1;
           student.forEach((answer, index) => {
 
             if (answer != '' && headingIndexs.indexOf(index) === -1) {
               headingIndexs.push(index)
-              console.log(index);
             }
 
             if (index === 2) {
               switch(answer) {
                 case 'Great!':
                   day.chartData.datasets[0].data[0] += 1;
+                  day.emotions.great.push(student[1])
                   break;
                 case 'Good':
                   day.chartData.datasets[0].data[1] += 1;
+                  day.emotions.good.push(student[1])
                   break;
                 case 'Meh':
                   day.chartData.datasets[0].data[2] += 1;
+                  day.emotions.meh.push(student[1])
                   break;
                 case 'Terrible':
-                  day.chartData.datasets[0].data[3] += 1;
+                  day.chartData.datasets[0].data[3] += 1;                  day.emotions.terrible.push(student[1])
                   break;
               }
             }
 
-            // if (answer !== '' && day.headings.indexOf(this.tableCols[index]) === -1) {
-            //   day.headings.push(this.tableCols[index])
-            //   headingIndexs.push(index)
-            // }
           })
 
           headingIndexs.sort((a,b) => {
