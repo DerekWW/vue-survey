@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container">
-    <div class="row" v-for="day in today">
+    <div class="row" v-for="day in recent">
       <div class="col s12">
         <h4 class="center">{{ day.date.format("dddd, MMMM Do YYYY") }}</h4>
         <div class="col s6">
@@ -62,23 +62,15 @@
 <script>
 import PieChart from '../charts.js'
 
-/*eslint-disable*/
 export default {
-  name: 'Today',
+  name: 'Recent',
   components: {
     PieChart
   },
-  data: function(){
+  data: function () {
     return {
-      today: [this.orderedByDay[0]],
-      yesterday: this.orderedByDay[1],
-      emotionChange: {
-
-      },
+      recent: this.orderedByDay.slice(0, 25)
     }
-  },
-  beforeMount: function() {
-    
   },
   props: ['orderedByDay']
 }
@@ -86,8 +78,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-
 
 #great {
   background-color: rgba(24,255,0, 0.2)

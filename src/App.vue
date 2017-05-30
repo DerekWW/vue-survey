@@ -19,6 +19,7 @@ import navi from './components/partials/navi';
 import foot from './components/partials/foot';
 import _ from 'lodash';
 import moment from 'moment';
+import config from './helpers/config'
 
 export default {
   name: 'app',
@@ -50,6 +51,21 @@ export default {
 
 
   methods: {
+    updateData: function(){
+      window.gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: config.spreadsheetId,
+        range: 'Form Responses 1!$A$1:$YY'
+      }).then((response) => {
+        return response.result.values || []  // eslint-disable
+      }, (error) => {
+        console.error(error)
+        callback(false, error.result.error)
+      }).then((data) => {
+        this.rows = data.data;
+      }).then(() => {
+        this.organizeData()
+      })
+    },
     organizeData: function() {
       this.myRows = _.cloneDeep(this.rows);
 

@@ -13,15 +13,15 @@
   <div class="col s4">
     <div class="row">
       <div class="col s12">
-        <router-link to="/by-day" class="waves-effect waves-light btn-large">All Days</router-link>
+        <router-link to="/recent" class="waves-effect waves-light btn-large">Last 5 Weeks</router-link>
+
       </div>
     </div>
   </div>
   <div class="col s4">
     <div class="row">
       <div class="col s12">
-        <a class="waves-effect waves-light btn-large">Button</a>
-
+        <router-link to="/by-day" class="waves-effect waves-light btn-large">All Days</router-link>
       </div>
     </div>
   </div>
