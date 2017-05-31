@@ -102,12 +102,12 @@ export default {
 
         day.headings = [];
         day.totalSubmitted = 0;
-        day.emotions = {
-          great: [],
-          good: [],
-          meh: [],
-          terrible: []
-        }
+        day.emotions = [
+          [],
+          [],
+          [],
+          []
+        ]
         day.chartData = {
           labels: ['Great!', 'Good', 'Meh', 'Terrible'],
           datasets: [
@@ -136,18 +136,18 @@ export default {
               switch(answer) {
                 case 'Great!':
                   day.chartData.datasets[0].data[0] += 1;
-                  day.emotions.great.push(student[1])
+                  day.emotions[0].push(student[1])
                   break;
                 case 'Good':
                   day.chartData.datasets[0].data[1] += 1;
-                  day.emotions.good.push(student[1])
+                  day.emotions[1].push(student[1])
                   break;
                 case 'Meh':
                   day.chartData.datasets[0].data[2] += 1;
-                  day.emotions.meh.push(student[1])
+                  day.emotions[2].push(student[1])
                   break;
                 case 'Terrible':
-                  day.chartData.datasets[0].data[3] += 1;                  day.emotions.terrible.push(student[1])
+                  day.chartData.datasets[0].data[3] += 1;                  day.emotions[3].push(student[1])
                   break;
               }
             }

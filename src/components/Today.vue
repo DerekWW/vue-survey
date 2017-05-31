@@ -8,25 +8,25 @@
             <div class="col s2">
               <u>Great!</u>
               <ul id="great">
-                <li v-for="person in day.emotions.great">{{ person }}</li>
+                <li v-for="person in day.emotions[0]">{{ person }}</li>
               </ul >
             </div>
             <div class="col s2" >
               <u>Good!</u>
               <ul id="good">
-                <li v-for="person in day.emotions.good">{{ person }}</li>
+                <li v-for="person in day.emotions[1]">{{ person }}</li>
               </ul>
             </div>
             <div class="col s2">
               <u>Meh</u>
               <ul id="meh">
-                <li v-for="person in day.emotions.meh">{{ person }}</li>
+                <li v-for="person in day.emotions[2]">{{ person }}</li>
               </ul>
             </div>
             <div class="col s2">
               <u>Terrible</u>
               <ul  id="terrible">
-                <li v-for="person in day.emotions.terrible">{{ person }}</li>
+                <li v-for="person in day.emotions[3]">{{ person }}</li>
               </ul>
             </div>
           </div>
@@ -71,7 +71,7 @@ export default {
   data: function(){
     return {
       today: [this.orderedByDay[0]],
-      yesterday: this.orderedByDay[1],
+      yesterday: [this.orderedByDay[1]],
       emotionChange: {
 
       },
