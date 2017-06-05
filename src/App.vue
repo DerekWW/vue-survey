@@ -1,14 +1,23 @@
 <template>
 <div id="app">
-  <navi :authenticated="authenticated" v-on:logout='logout'></navi>
-  <div  v-if="!authenticated"  class="center">
-    <div class="">
-      <img src="./assets/logo.png">
-      <button v-on:click="authenticate" className="btn">Connect with Google</button>
+  <header>
+    <navi :authenticated="authenticated" v-on:logout='logout'></navi>
+  </header>
+  <main>
+    <div v-if="!authenticated" class="center">
+      <div class="">
+        <div>
+          <img src="https://media.glassdoor.com/sqll/825775/galvanize-squarelogo-1429039425588.png" alt="">
+        </div>
+        <button v-on:click="authenticate" className="btn">Connect with Google</button>
+        <div>
+          Must use a email that has access to the sheet being viewed.
+        </div>
+      </div>
     </div>
-  </div>
-  <router-view v-else :rows="rows" :orderedByDay="orderedByDay" :tableCols="tableCols"></router-view>
-  <foot></foot>
+    <router-view v-else :rows="rows" :orderedByDay="orderedByDay" :tableCols="tableCols"></router-view>
+  </main>
+  <footcomp></footcomp>
 </div>
 </template>
 
@@ -16,7 +25,7 @@
 /* eslint-disable */
 import { checkAuth, load } from './helpers/spreadsheet';
 import navi from './components/partials/navi';
-import foot from './components/partials/foot';
+import footcomp from './components/partials/foot';
 import _ from 'lodash';
 import moment from 'moment';
 import config from './helpers/config'
@@ -25,7 +34,7 @@ export default {
   name: 'app',
   components: {
     navi,
-    foot
+    footcomp
 
   },
   data() {
@@ -66,6 +75,7 @@ export default {
         this.organizeData()
       })
     },
+
     organizeData: function() {
       this.myRows = _.cloneDeep(this.rows);
 
@@ -226,9 +236,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 
 body {
@@ -236,9 +254,16 @@ body {
   min-height: 100vh;
   flex-direction: column;
 }
+
 main {
   flex: 1 0 auto;
 }
+
+.center {
+  margin-top: 15%;
+}
+
+
 
 
 

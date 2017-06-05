@@ -61,6 +61,7 @@
 
 <script>
 import PieChart from '../charts.js'
+import _ from 'lodash'
 
 /*eslint-disable*/
 export default {
@@ -70,15 +71,33 @@ export default {
   },
   data: function(){
     return {
-      today: [this.orderedByDay[0]],
+      today: _.cloneDeep([this.orderedByDay[0]]),
       yesterday: [this.orderedByDay[1]],
-      emotionChange: {
 
-      },
     }
   },
   beforeMount: function() {
-    
+    //check todays emotional state vs yesterdays emotional state
+    this.today[0].emotions.forEach((todayEmotion, todayIndex) => {
+
+      todayEmotion.forEach((todayPerson, personIndex) => {
+
+        this.yesterday[0].emotions.forEach((yesterdayEmotion, yesterdayIndex) => {
+          if (yesterdayEmotion.indexOf(todayPerson) !== -1) {
+            if (todayIndex > yesterdayIndex) {
+              todayEmotion[personIndex] += ' 👎'
+            } else if (todayIndex === yesterdayIndex) {
+              todayEmotion[personIndex]
+            } else if (todayIndex < yesterdayIndex) {
+              todayEmotion[personIndex] += ' 👍'
+            }
+
+          }
+        })
+
+      })
+
+    })
   },
   props: ['orderedByDay']
 }
