@@ -1,6 +1,6 @@
 <template>
 <div class="row container">
-  <div class="col s12 center">
+  <div class="col s12 ">
     <h3>Filter Survey Responses</h3>
   </div>
   <div class="col s4">
@@ -44,8 +44,5 @@ export default {
 
 <style scoped>
 
-.container {
-  margin-top: 50%;
-}
 
 </style>

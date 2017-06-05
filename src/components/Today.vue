@@ -87,7 +87,7 @@ export default {
             if (todayIndex > yesterdayIndex) {
               todayEmotion[personIndex] += ' 👎'
             } else if (todayIndex === yesterdayIndex) {
-              todayEmotion[personIndex]
+              todayEmotion[personIndex] += ' --'
             } else if (todayIndex < yesterdayIndex) {
               todayEmotion[personIndex] += ' 👍'
             }

@@ -4,7 +4,7 @@
     <navi :authenticated="authenticated" v-on:logout='logout'></navi>
   </header>
   <main>
-    <div v-if="!authenticated" class="center">
+    <div v-if="!authenticated" class="center logo">
       <div class="">
         <div>
           <img src="https://media.glassdoor.com/sqll/825775/galvanize-squarelogo-1429039425588.png" alt="">
@@ -157,7 +157,8 @@ export default {
                   day.emotions[2].push(student[1])
                   break;
                 case 'Terrible':
-                  day.chartData.datasets[0].data[3] += 1;                  day.emotions[3].push(student[1])
+                  day.chartData.datasets[0].data[3] += 1;
+                  day.emotions[3].push(student[1])
                   break;
               }
             }
@@ -190,6 +191,7 @@ export default {
       })
 
       this.orderedByDay.reverse()
+      console.log(this.orderedByDay);
     },
 
     handleAuth: function(authResult) {
@@ -239,32 +241,16 @@ export default {
 <style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
-  width: 100%;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  flex: 1 0 auto;
-}
-
-body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-main {
-  flex: 1 0 auto;
-}
-
-.center {
-  margin-top: 15%;
 }
 
 
 
+
+
+.logo {
+  margin-top: 15px;
+}
 
 
 
