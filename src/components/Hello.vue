@@ -3,14 +3,14 @@
   <div class="col s12 ">
     <h3>Filter Survey Responses</h3>
   </div>
-  <div class="col s4">
+  <div class="col s3">
     <div class="row">
       <div class="col s12">
         <router-link to="/today" class="waves-effect waves-light btn-large">Today Only</router-link>
       </div>
     </div>
   </div>
-  <div class="col s4">
+  <div class="col s3">
     <div class="row">
       <div class="col s12">
         <router-link to="/recent" class="waves-effect waves-light btn-large">Last 5 Weeks</router-link>
@@ -18,10 +18,17 @@
       </div>
     </div>
   </div>
-  <div class="col s4">
+  <div class="col s3">
     <div class="row">
       <div class="col s12">
         <router-link to="/by-day" class="waves-effect waves-light btn-large">All Days</router-link>
+      </div>
+    </div>
+  </div>
+  <div class="col s3">
+    <div class="row">
+      <div class="col s12">
+        <router-link to="/by-student" class="waves-effect waves-light btn-large">By Student</router-link>
       </div>
     </div>
   </div>

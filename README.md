@@ -12,6 +12,8 @@ In order to get the app running you will need to make sure you have a Google api
 
 In ```config.js``` add in your api, client id, and the spreadsheet id. The app should now be able read in all the data from that spreadsheet when you login, assuming the account used to login has permission to access that spreadsheet.
 
+This was originally used with a class of 19, so the amount of expected submissions is hardcoded in. You should update this number in files Day.vue, Recent.vue, and Today.vue.
+
 ## Build Setup
 
 ``` bash

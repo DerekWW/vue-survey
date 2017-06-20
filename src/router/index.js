@@ -5,6 +5,7 @@ import Hello from '@/components/Hello';
 import Today from '@/components/Today';
 import Day from '@/components/Day';
 import Recent from '@/components/Recent';
+import Student from '@/components/Student';
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       name: 'Recent',
       component: Recent
     },
+    {
+      path: '/by-student',
+      name: 'Student',
+      component: Student
+    }
 
   ],
 });
