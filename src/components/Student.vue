@@ -15,14 +15,18 @@ export default {
   name: 'Student',
   data: function() {
     return {
-
+      students: {},
+      recent: this.orderedByDay.slice(0, 25)
     }
   },
   props: ['rows', 'orderedByDay'],
+  beforeMount: function() {
+
+  },
   created: function() {
     $(document).ready(function() {
-    $('select').material_select();
-});
+      $('select').material_select();
+  });
 
   }
 }
